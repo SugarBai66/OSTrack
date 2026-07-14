@@ -49,22 +49,24 @@ TRAIN:
   DROP_PATH_RATE: 0.1
   CE_START_EPOCH: 20  # candidate elimination start epoch
   CE_WARM_EPOCH: 50  # candidate elimination warm up epoch
-  BATCH_SIZE: 32
+  BATCH_SIZE: 48
   EPOCH: 100
   GIOU_WEIGHT: 2.0
   L1_WEIGHT: 5.0
   GRAD_CLIP_NORM: 0.1
   LR: 0.0004
   LR_DROP_EPOCH: 80
-  NUM_WORKER: 10
+  NUM_WORKER: 8
   OPTIMIZER: ADAMW
+  OPTIMIZER_ARGS:           # 新增部分，用来防止"nan出现"
+    eps: 0.0001
   PRINT_INTERVAL: 50
   SCHEDULER:
     TYPE: step
     DECAY_RATE: 0.1
   VAL_EPOCH_INTERVAL: 20
   WEIGHT_DECAY: 0.0001
-  AMP: False
+  AMP: True
 TEST:
   EPOCH: 100
   SEARCH_FACTOR: 4.0

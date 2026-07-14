@@ -43,7 +43,7 @@ cfg.TRAIN.LR_DROP_EPOCH = 400
 cfg.TRAIN.BATCH_SIZE = 16
 cfg.TRAIN.NUM_WORKER = 8
 cfg.TRAIN.OPTIMIZER = "ADAMW"
-cfg.TRAIN.OPTIMIZER_ARGS = {}   # 空字典作为默认值
+# 在这里添加新字段
 cfg.TRAIN.BACKBONE_MULTIPLIER = 0.1
 cfg.TRAIN.GIOU_WEIGHT = 2.0
 cfg.TRAIN.L1_WEIGHT = 5.0
@@ -128,11 +128,7 @@ def _update_config(base_cfg, exp_cfg):
                 if not isinstance(v, dict):
                     base_cfg[k] = v
                 else:
-                    # 如果是 OPTIMIZER_ARGS，直接赋值，不再递归检查子键
-                    if k == 'OPTIMIZER_ARGS':
-                        base_cfg[k] = v
-                    else:
-                        _update_config(base_cfg[k], v)
+                    _update_config(base_cfg[k], v)
             else:
                 raise ValueError("{} not exist in config.py".format(k))
     else:
