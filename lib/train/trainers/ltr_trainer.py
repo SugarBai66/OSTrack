@@ -9,7 +9,7 @@ from lib.train.admin import TensorboardWriter
 import torch
 import time
 from torch.utils.data.distributed import DistributedSampler
-from torch.cuda.amp import autocast
+from torch.amp import autocast
 from torch.amp import GradScaler
 
 from lib.utils.misc import get_world_size
@@ -85,7 +85,7 @@ class LTRTrainer(BaseTrainer):
             if not self.use_amp:
                 loss, stats = self.actor(data)
             else:
-                with autocast():
+                with autocast('cuda'):
                     loss, stats = self.actor(data)
 
             # backward pass and update weights
