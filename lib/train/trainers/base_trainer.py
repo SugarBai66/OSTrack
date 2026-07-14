@@ -1,6 +1,8 @@
 import os
 import glob
 import torch
+from lib.train.admin.stats import AverageMeter  # 确保导入该类
+torch.serialization.add_safe_globals([AverageMeter])
 import traceback
 from lib.train.admin import multigpu
 from torch.utils.data.distributed import DistributedSampler
@@ -191,7 +193,7 @@ class BaseTrainer:
             raise TypeError
 
         # Load network
-        checkpoint_dict = torch.load(checkpoint_path, map_location='cpu')
+        checkpoint_dict = torch.load(checkpoint_path, map_location='cpu', weights_only=False)
 
         assert net_type == checkpoint_dict['net_type'], 'Network is not of correct type.'
 
@@ -263,7 +265,7 @@ class BaseTrainer:
 
         # Load network
         print("Loading pretrained model from ", checkpoint_path)
-        checkpoint_dict = torch.load(checkpoint_path, map_location='cpu')
+        checkpoint_dict = torch.load(checkpoint_path, map_location='cpu', weights_only=False)
 
         assert net_type == checkpoint_dict['net_type'], 'Network is not of correct type.'
 

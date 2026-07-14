@@ -10,7 +10,7 @@ import torch
 import time
 from torch.utils.data.distributed import DistributedSampler
 from torch.cuda.amp import autocast
-from torch.cuda.amp import GradScaler
+from torch.amp import GradScaler
 
 from lib.utils.misc import get_world_size
 
@@ -51,7 +51,7 @@ class LTRTrainer(BaseTrainer):
         self.settings = settings
         self.use_amp = use_amp
         if use_amp:
-            self.scaler = GradScaler()
+            self.scaler = GradScaler(device='cuda')
 
     def _set_default_settings(self):
         # Dict of all default values
