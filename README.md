@@ -1,13 +1,13 @@
 # OSTrack
 
+# Code Log
+
 vitb_384_mae_ce_32x4_got10k_ep100: set train parameters
 
 loader.py -> return torch.stack(batch, 1) in line 92
 
 set:
 lib/train/admin/local.py  # paths about training
-
-
 
 # OSTrack 训练优化与 AMP 混合精度配置指南
 
