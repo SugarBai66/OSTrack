@@ -2,7 +2,7 @@
 
 # Result
 
-![image-20260716182849263](assets/result.png)
+![image-20260716182849263](./assets/result.png)
 
 # Code Log
 
