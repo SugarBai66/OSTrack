@@ -1,5 +1,9 @@
 # OSTrack
 
+# Result
+
+![image-20260716182849263](assets/result.png)
+
 # Code Log
 
 vitb_384_mae_ce_32x4_got10k_ep100: set train parameters
@@ -233,3 +237,56 @@ trainer = LTRTrainer(..., use_amp=use_amp)
 ### 💎 总结
 
 Zeal官方源中没有NVIDIA文档集，但通过**社区第三方Feed**或**自制Docset**的方式依然可以集成。建议先尝试方案一，如果不行再考虑方案二。
+
+
+
+# 问题
+
+#### 我现在测试完成后，test下的got10k测试结果不大，但是我运行transfor_got10k.py后就出问题了，首先是压缩包放在了got10k下，其次是进程一直运行不停止
+
+Transform_got10k.py文件下的
+
+```python
+shutil.make_archive(src_dir, "zip", src_dir)   # 第3个参数 root_dir=src_dir
+shutil.make_archive(dest_dir, "zip", dest_dir)  # 第3个参数 root_dir=dest_dir
+```
+
+![image-20260716212835082](assets/image-20260716212835082_1.png)
+
+##### 使用以下代码
+
+```python
+# ... existing code ...
+    # make zip archive
+    # shutil.make_archive(src_dir, "zip", src_dir, force_zip64=True)
+    # Deleted:shutil.make_archive(src_dir, "zip", src_dir)
+    # Deleted:shutil.make_archive(dest_dir, "zip", dest_dir)
+    src_parent = os.path.dirname(src_dir.rstrip('/'))
+    dest_parent = os.path.dirname(dest_dir.rstrip('/'))
+    src_basename = os.path.basename(src_dir.rstrip('/'))
+    dest_basename = os.path.basename(dest_dir.rstrip('/'))
+    shutil.make_archive(os.path.join(src_parent, src_basename), "zip", src_dir)
+    shutil.make_archive(os.path.join(dest_parent, dest_basename), "zip", dest_dir)
+    # zip_dir_with_zip64(src_dir, src_dir)  # 生成 src_dir.zip
+    # zip_dir_with_zip64(dest_dir, dest_dir)  # 生成 dest_dir.zip
+# ... existing code ...
+
+```
+
+![image-20260716213032246](assets/image-20260716213032247.png)
+
+![image-20260716213153842](assets/image-20260716213153842.png)
+
+```python
+# ... existing code ...
+    # make zip archive
+    # Deleted:shutil.make_archive(src_dir, "zip", src_dir)
+    # Deleted:shutil.make_archive(dest_dir, "zip", dest_dir)
+    dest_zip_path = os.path.join(os.path.dirname(dest_dir.rstrip('/')),
+                                 os.path.basename(dest_dir.rstrip('/')))
+    shutil.make_archive(dest_zip_path, "zip", dest_dir)
+    print(f"Zip saved to: {dest_zip_path}.zip")
+# ... existing code ...
+
+```
+
